@@ -22,7 +22,7 @@ export class NcDetailPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/non-conform/tabs/discover');
         return;
       }
-      this.ncSub = this.ncService.getNcById(parseInt(paramMap.get('ncId'))).subscribe((nc) => {
+      this.ncSub = this.ncService.getNcById(paramMap.get('ncId')).subscribe((nc) => {
         this.nonConformance = nc;
       });
     });

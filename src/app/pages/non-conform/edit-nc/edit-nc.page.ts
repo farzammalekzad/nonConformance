@@ -30,7 +30,7 @@ export class EditNcPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/non-conform/tabs/discover');
         return;
       }
-      this.ncSub = this.ncService.getNcById(parseInt(pm.get('ncId'))).subscribe((nc) => {
+      this.ncSub = this.ncService.getNcById(pm.get('ncId')).subscribe((nc) => {
         this.nonConformity = nc;
         this.form = new FormGroup({
             status: new FormControl(this.nonConformity.status),

@@ -18,10 +18,13 @@ export class DiscoverPage implements OnInit, OnDestroy {
   constructor(private ncService: NcService, private router: Router) { }
 
   ngOnInit() {
-     this.ncSub = this.ncService.getAllNc().subscribe((ncs) => {
-       this.nonConformances = ncs;
-     });
+     this.ncSub = this.ncService.getAllNc().subscribe();
   }
+  ionViewWillEnter() {
+    this.ncService.fetchNcs().subscribe((ncs) => {
+      this.nonConformances = ncs;
+    });
+}
 
   editNc(id: number, itemSliding: IonItemSliding) {
     itemSliding.close().then(() => {

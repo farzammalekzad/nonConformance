@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {NcService} from '../nc.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {subscribeTo} from 'rxjs/internal-compatibility';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-new-nc',
   templateUrl: './new-nc.page.html',
   styleUrls: ['./new-nc.page.scss'],
 })
-export class NewNcPage implements OnInit {
+export class NewNcPage implements OnInit, OnDestroy {
 
   today: Date = new Date(Date.now());
   form: FormGroup;
+  private ncSub: Subscription;
 
   constructor(private ncService: NcService, private router: Router, private loadingCtrl: LoadingController) {
     this.form = new FormGroup({
@@ -50,10 +52,9 @@ export class NewNcPage implements OnInit {
    async newNonConformity() {
     const loading = await this.loadingCtrl.create({
       message: 'در حال بارگذاری...',
-      duration: 2000
     });
     await loading.present();
-    this.ncService.addNc(
+    this.ncSub = this.ncService.addNc(
       this.form.value.title,
       this.form.value.description,
       this.form.value.location,
@@ -65,5 +66,10 @@ export class NewNcPage implements OnInit {
       loading.dismiss();
       this.router.navigateByUrl('/non-conform/tabs/discover');
     });
+  }
+  ngOnDestroy() {
+    if (this.ncSub) {
+      this.ncSub.unsubscribe();
+    }
   }
 }
