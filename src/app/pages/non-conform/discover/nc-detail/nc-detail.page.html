@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="بازگشت" defaultHref="/non-conform/tabs/discover"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="animate__animated animate__fadeIn">جزئیات عدم انطباق</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-xs="12" size-md="6" offset-md="3">
+        <ion-img src="{{nonConformance.imageUrl}}"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-xs="6">
+        <ion-item lines="none">
+          <ion-label>
+            <h2>وضعیت عدم انطباق</h2>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size-xs="6">
+        <ion-item lines="none">
+          <ion-label><h2>بسته</h2></ion-label>
+          <ion-toggle [checked]="nonConformance.status" disabled></ion-toggle>
+          <ion-label class="ion-margin-start"><h2>باز</h2></ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3" size-xs="12">
+        <ion-list>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="layers-sharp"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h2>عنوان: </h2>
+              <ion-text>{{nonConformance.title}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="calendar-number-sharp"></ion-icon>
+            <ion-label>
+              <h2>تاریخ: </h2>
+              <ion-text>{{nonConformance.date | date}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="document-text-sharp"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h2>توضیحات: </h2>
+              <ion-text>{{nonConformance.description}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="location-sharp"></ion-icon>
+            <ion-label>
+              <h2> مکان وقوع : </h2>
+              <ion-text>{{nonConformance.location}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="nuclear-sharp"></ion-icon>
+            <ion-label>
+              <h2>شدت :</h2>
+              <ion-text>{{nonConformance.severity}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="apps-sharp"></ion-icon>
+            <ion-label>
+              <h2>حوزه :</h2>
+              <ion-text>{{nonConformance.sphere}}</ion-text>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon slot="start" name="documents-sharp"></ion-icon>
+            <ion-label>
+              <h2>مدارک مرجع :</h2>
+              <ion-text>{{nonConformance.reference}}</ion-text>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

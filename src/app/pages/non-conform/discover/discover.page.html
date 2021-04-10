@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="animate__animated animate__fadeIn">لیست عدم انطباق ها</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let nc of nonConformances" #itemSliding>
+      <ion-item slot="start" lines="none" detail [routerLink]="['/', 'non-conform', 'tabs', 'discover', 'nc-detail', nc.id]">
+        <ion-avatar slot="start">
+          <ion-img src="{{nc.imageUrl}}"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{nc.title}}</h2>
+          <p>{{nc.description}}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="start">
+        <ion-item-option (click)="editNc(nc.id,itemSliding)" color="warning">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>

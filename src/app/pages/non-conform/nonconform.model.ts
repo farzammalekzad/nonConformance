@@ -1,0 +1,12 @@
+export interface NonconformModel {
+  id: number;
+  title: string;
+  imageUrl: string;
+  description: string;
+  location: string;
+  severity: string;
+  sphere: string;
+  reference: string;
+  status: boolean;
+  date: Date;
+}
