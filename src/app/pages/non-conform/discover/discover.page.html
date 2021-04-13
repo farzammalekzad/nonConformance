@@ -5,7 +5,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <div *ngIf="isLoading" class="ion-text-center">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <div *ngIf="!isLoading && nonConformances.length == 0" class="ion-text-center">
+    <ion-label color="primary">
+      <p>تاکنون عدم انطباقی توسط شما شناسایی نشده است</p>
+    </ion-label>
+  </div>
+  <ion-list *ngIf="!isLoading && nonConformances.length > 0">
     <ion-item-sliding *ngFor="let nc of nonConformances" #itemSliding>
       <ion-item slot="start" lines="none" detail [routerLink]="['/', 'non-conform', 'tabs', 'discover', 'nc-detail', nc.id]">
         <ion-avatar slot="start">

@@ -12,17 +12,21 @@ import {Subscription} from 'rxjs';
 })
 export class DiscoverPage implements OnInit, OnDestroy {
 
-  nonConformances: NonconformModel[];
-  private ncSub: Subscription;
+  nonConformances: NonconformModel[] = [];
+  isLoading = false;
+  private ncSub1: Subscription;
+  private ncSub2: Subscription;
 
   constructor(private ncService: NcService, private router: Router) { }
 
   ngOnInit() {
-     this.ncSub = this.ncService.getAllNc().subscribe();
+     this.ncSub2 = this.ncService.getAllNc().subscribe();
   }
   ionViewWillEnter() {
-    this.ncService.fetchNcs().subscribe((ncs) => {
+    this.isLoading = true;
+    this.ncSub1 = this.ncService.fetchNcs().subscribe((ncs) => {
       this.nonConformances = ncs;
+      this.isLoading = false;
     });
 }
 
@@ -33,8 +37,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.ncSub) {
-      this.ncSub.unsubscribe();
+    if (this.ncSub1 || this.ncSub2) {
+      this.ncSub1.unsubscribe();
+      this.ncSub2.unsubscribe();
     }
   }
 

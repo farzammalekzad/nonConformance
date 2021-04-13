@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {LoadingController, NavController} from '@ionic/angular';
+import {AlertController, LoadingController, NavController} from '@ionic/angular';
 import {NcService} from '../nc.service';
 import {NonconformModel} from '../nonconform.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -15,16 +15,19 @@ export class EditNcPage implements OnInit, OnDestroy {
   nonConformity: NonconformModel;
   private ncSub: Subscription;
   form: FormGroup;
+  isLoading = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private navCtrl: NavController,
               private ncService: NcService,
-              private loadingCtrl: LoadingController
+              private loadingCtrl: LoadingController,
+              private alertCtrl: AlertController
               ) {
 
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this.activatedRoute.paramMap.subscribe((pm) => {
       if (!pm.has('ncId')) {
         this.navCtrl.navigateBack('/non-conform/tabs/discover');
@@ -40,7 +43,7 @@ export class EditNcPage implements OnInit, OnDestroy {
             }),
             description: new FormControl(this.nonConformity.description, {
               updateOn: 'blur',
-              validators: [Validators.required, Validators.minLength(10)]
+              validators: [Validators.required, Validators.minLength(5)]
             }),
             severity: new FormControl(this.nonConformity.severity, {
               updateOn: 'blur',
@@ -56,6 +59,20 @@ export class EditNcPage implements OnInit, OnDestroy {
             })
           }
         );
+        this.isLoading = false;
+      }, async error => {
+       const alert =  await this.alertCtrl.create({
+          header: 'خطا',
+          message: 'لطفا مجددا تلاش کنید',
+          buttons: [{
+            text: 'باشه',
+            role: 'cancel',
+            handler: () => {
+              this.navCtrl.navigateBack('/non-conform/tabs/discover');
+            }
+          }]
+        });
+       await alert.present();
       });
     });
   }

@@ -6,3 +6,12 @@ ion-toggle {
   --background: green;
   --background-checked: red;
 }
+ion-spinner {
+  width: 2em;
+  height: 2em;
+}
+div {
+  margin: 0 auto;
+  position: absolute;
+  top: 50%!important; left: 0; bottom: 0; right: 0;
+}
