@@ -1,5 +1,7 @@
 {
   "name": "tamrin",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

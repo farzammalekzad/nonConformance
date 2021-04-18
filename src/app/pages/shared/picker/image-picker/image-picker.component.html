@@ -1,0 +1,11 @@
+<div class="picker">
+  <ion-img class="image" [src]="selectedImage" role="button" *ngIf="selectedImage && showPreview" (click)="imagePick()"></ion-img>
+  <ion-button class="ion-align-self-center" (click)="imagePick()" *ngIf="!selectedImage || !showPreview">
+    <ion-icon slot="start" name="camera"></ion-icon> ثبت تصویر
+  </ion-button>
+  <ion-button class="ion-align-self-end btn" (click)="deletePreviewPic()" *ngIf="selectedImage && showPreview">
+    <ion-icon slot="start" name="trash"></ion-icon> حذف تصویر
+  </ion-button>
+</div>
+
+<input type="file" #filePicker (change)="filePick($event)" accept="image/jpeg" *ngIf="desktopPlat">

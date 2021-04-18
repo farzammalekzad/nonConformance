@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {LocationModalComponent} from './pages/shared/location-modal/location-modal.component';
+import {NgxMapboxGLModule} from 'mapir-angular-component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {LocationModalComponent} from './pages/shared/location-modal/location-mod
   imports: [
     BrowserModule,
     HttpClientModule,
+    NgxMapboxGLModule,
     IonicModule.forRoot(),
     AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

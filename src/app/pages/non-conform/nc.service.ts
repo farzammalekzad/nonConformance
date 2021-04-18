@@ -86,10 +86,10 @@ export class NcService {
     }));*/
   }
 
-  addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string) {
+  addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
 
     // tslint:disable-next-line:max-line-length
-    const newNc: NonconformModel = {id: null, title, imageUrl: '../../../assets/img/nc.jpg' , description, location, severity, sphere, reference, status: true, date: new Date(Date.now())};
+    const newNc: NonconformModel = {id: null, title, imageUrl: image , description, location, severity, sphere, reference, status: true, date: new Date(Date.now())};
     return this.http.post<{name: string}>('https://ionic-ncr-default-rtdb.firebaseio.com/nc.json', {...newNc, id: null})
       .pipe(switchMap((resData) => {
         this.generatedId = resData.name;

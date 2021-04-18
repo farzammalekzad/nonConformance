@@ -4,11 +4,13 @@ import {LocationPickerComponent} from './picker/location-picker/location-picker.
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
+import {NgxMapboxGLModule} from 'mapir-angular-component';
+import {ImagePickerComponent} from './picker/image-picker/image-picker.component';
 
 @NgModule({
-  declarations: [LocationModalComponent, LocationPickerComponent],
-  imports: [CommonModule, IonicModule],
-  exports: [LocationPickerComponent, LocationModalComponent],
+  declarations: [LocationModalComponent, LocationPickerComponent, ImagePickerComponent],
+  imports: [CommonModule, IonicModule, NgxMapboxGLModule],
+  exports: [LocationPickerComponent, LocationModalComponent, ImagePickerComponent],
   entryComponents: [LocationModalComponent]
 })
 
