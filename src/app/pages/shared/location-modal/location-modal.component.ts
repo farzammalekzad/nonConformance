@@ -3,6 +3,8 @@ import {AlertController, ModalController} from '@ionic/angular';
 import {Capacitor} from '@capacitor/core';
 import {Geolocation} from '@capacitor/geolocation';
 
+
+
 @Component({
   selector: 'app-location-modal',
   templateUrl: './location-modal.component.html',
@@ -21,8 +23,9 @@ export class LocationModalComponent implements OnInit {
   }
 
   cancel() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(this.currentPosition);
   }
+
   async getLocation() {
     const coordination = await Geolocation.getCurrentPosition();
     try {

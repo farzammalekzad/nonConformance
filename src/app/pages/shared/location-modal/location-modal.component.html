@@ -1,17 +1,19 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-button  class="animate__animated animate__fadeIn" fill="clear" color="warning" slot="primary" (click)="cancel()">
-      انصراف
+      خروج
     </ion-button>
-    <ion-button  class="animate__animated animate__fadeIn " slot="start" color="light" fill="clear">انتخاب مکان</ion-button>
   </ion-toolbar>
 </ion-header>
-<ion-content id="container">
+<ion-content>
+  <div id="container" >
     <mgl-map
-      [zoom]="[14]"
+      [zoom]="[12]"
       [center]="currentPosition"
       [centerWithPanTo]="true"
       [interactive]="true"
       [apiKey]="apiKey"
     ></mgl-map>
+  </div>
+
 </ion-content>

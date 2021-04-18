@@ -18,6 +18,8 @@ export class LocationPickerComponent implements OnInit {
       component: LocationModalComponent,
     });
     await modal.present();
+    const data = await modal.onDidDismiss();
+    console.log(data);
   }
 
 }
