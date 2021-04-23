@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Pipe, PipeTransform} from '@angular/core';
 import {FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {NcService} from '../nc.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
+import * as moment from 'jalali-moment';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -25,7 +26,15 @@ function base64toBlob(base64Data, contentType) {
   }
   return new Blob(byteArrays, { type: contentType });
 }
-
+@Pipe({
+  name: 'jalali'
+})
+export class JalaliPipe implements PipeTransform {
+  transform(value: any, args?: any): any {
+    let MomentDate = moment(value, 'YYYY/MM/DD');
+    return MomentDate.locale('fa').format('D MMM YYYY');
+  }
+}
 @Component({
   selector: 'app-new-nc',
   templateUrl: './new-nc.page.html',
