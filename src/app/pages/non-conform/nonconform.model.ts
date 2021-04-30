@@ -1,5 +1,5 @@
 export interface NonconformModel {
-  id: string;
+  _id: string;
   title: string;
   imageUrl: string;
   description: string;

@@ -15,9 +15,10 @@
   </div>
   <ion-list *ngIf="!isLoading && nonConformances.length > 0">
     <ion-item-sliding *ngFor="let nc of nonConformances" #itemSliding>
-      <ion-item slot="start" lines="none" detail [routerLink]="['/', 'non-conform', 'tabs', 'discover', 'nc-detail', nc.id]">
+      <ion-item slot="start" lines="none" detail [routerLink]="['/', 'non-conform', 'tabs', 'discover', 'nc-detail', nc._id]">
         <ion-avatar slot="start">
-          <ion-img src="{{nc.imageUrl}}"></ion-img>
+          <ion-img *ngIf="nc.imageUrl" src="{{nc.imageUrl}}"></ion-img>
+          <ion-img *ngIf="!nc.imageUrl" src="../../assets/img/nc.jpg"></ion-img>
         </ion-avatar>
         <ion-label>
           <h2>{{nc.title}}</h2>
@@ -31,5 +32,10 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
+
+  <div *ngIf="errMess">
+    <h2>Error</h2>
+    <p>{{errMess}}</p>
+  </div>
 
 </ion-content>

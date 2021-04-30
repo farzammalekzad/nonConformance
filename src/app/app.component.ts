@@ -3,6 +3,7 @@ import {DOCUMENT} from '@angular/common';
 import {Platform} from '@ionic/angular';
 import {Capacitor} from '@capacitor/core';
 import {SplashScreen} from '@capacitor/splash-screen';
+import {AuthService} from './pages/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,8 @@ import {SplashScreen} from '@capacitor/splash-screen';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private platform: Platform,
-    @Inject (DOCUMENT) private document: Document
+  constructor(private platform: Platform, private authService: AuthService,
+              @Inject (DOCUMENT) private document: Document
   ) {
     this.document.documentElement.dir = 'rtl';
     this.initializeApp();
@@ -24,8 +25,10 @@ export class AppComponent {
       this.platform.ready().then(() => {
         if (Capacitor.isPluginAvailable('SplashScreen')) {
           SplashScreen.hide();
-        }
-      });
+
+            }
+
+          });
   }
 
 }

@@ -83,7 +83,7 @@ export class EditNcPage implements OnInit, OnDestroy {
     });
     await loading.present();
     this.ncService.editNcs(
-      this.nonConformity.id,
+      this.nonConformity._id,
       this.form.value.title,
       this.form.value.description,
       this.form.value.severity,

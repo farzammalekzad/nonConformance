@@ -9,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {LocationModalComponent} from './pages/shared/location-modal/location-modal.component';
 import {NgxMapboxGLModule} from 'mapir-angular-component';
+import {Interceptor} from './pages/auth/Interceptor';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 
 @NgModule({
@@ -20,7 +22,14 @@ import {NgxMapboxGLModule} from 'mapir-angular-component';
     NgxMapboxGLModule,
     IonicModule.forRoot(),
     AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass: IonicRouteStrategy,
+  }, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: Interceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

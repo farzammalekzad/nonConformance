@@ -16,6 +16,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   isLoading = false;
   private ncSub1: Subscription;
   private ncSub2: Subscription;
+  errMess: string;
 
   constructor(private ncService: NcService, private router: Router) { }
 
@@ -27,6 +28,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
     this.ncSub1 = this.ncService.fetchNcs().subscribe((ncs) => {
       this.nonConformances = ncs;
       this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
+      this.errMess = error;
     });
 }
 

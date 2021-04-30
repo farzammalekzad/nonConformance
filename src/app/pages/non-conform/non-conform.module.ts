@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NonConformPageRoutingModule } from './non-conform-routing.module';
 
 import { NonConformPage } from './non-conform.page';
+import { baseUrl } from '../shared/baseurl';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { NonConformPage } from './non-conform.page';
     IonicModule,
     NonConformPageRoutingModule
   ],
+  providers: [{provide: 'BaseURL', useValue: baseUrl}],
   declarations: [NonConformPage]
 })
 export class NonConformPageModule {}

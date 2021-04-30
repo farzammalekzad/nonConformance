@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {NonconformModel} from './nonconform.model';
 import {BehaviorSubject, of} from 'rxjs';
-import {filter, findIndex, map, switchMap, take, tap} from 'rxjs/operators';
+import {catchError, filter, findIndex, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {baseUrl} from '../shared/baseurl';
+import {HttpService} from './http.service';
+import {AuthService} from '../auth/auth.service';
 
 
 interface NcData {
@@ -16,22 +19,39 @@ interface NcData {
   status: boolean;
   date: string;
 }
+interface imageResData {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class NcService {
 
   generatedId: string;
+  date: Date;
   nonConform = new BehaviorSubject<NonconformModel[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public httpService: HttpService, private authService: AuthService) { }
 
   getAllNc() {
     return this.nonConform.asObservable();
   }
 
   fetchNcs() {
-    return this.http.get<{ [key: string]: NcData}>('https://ionic-ncr-default-rtdb.firebaseio.com/nc.json')
+    return this.http.get<NonconformModel[]>('http://localhost:3000/nc')
+      .pipe(map(resData => {
+          this.nonConform.next(resData);
+          return resData;
+      }), catchError(this.httpService.handleError));
+      }
+    /*return this.http.get<{ [key: string]: NcData}>('https://ionic-ncr-default-rtdb.firebaseio.com/nc.json')
       .pipe(map(resData => {
         const ncs = [];
         for (const key in resData) {
@@ -53,28 +73,33 @@ export class NcService {
         return ncs;
       }), tap((ncs) => {
         return this.nonConform.next(ncs);
-      }));
-  }
+      }));*/
 
 
-  getNcById(id: string) {
-    let nc: NonconformModel;
-    return this.http.get<NcData>(`https://ionic-ncr-default-rtdb.firebaseio.com/nc/${id}.json`)
-      .pipe(map((data) => {
-         nc = {
-          id,
-          title: data.title,
-          imageUrl: data.imageUrl,
-          description: data.description,
-          location: data.location,
-          severity: data.severity,
-          sphere: data.sphere,
-          reference: data.reference,
-          status: data.status,
-          date: new Date(data.date)
-        };
-         return nc;
+
+getNcById(id: string) {
+    return this.http.get<NonconformModel>('http://localhost:3000/nc/' + id)
+      .pipe(map(resData => {
+        return resData;
       }));
+
+    // let nc: NonconformModel;
+    // return this.http.get<NcData>(`https://ionic-ncr-default-rtdb.firebaseio.com/nc/${id}.json`)
+    //   .pipe(map((data) => {
+    //      nc = {
+    //       id,
+    //       title: data.title,
+    //       imageUrl: data.imageUrl,
+    //       description: data.description,
+    //       location: data.location,
+    //       severity: data.severity,
+    //       sphere: data.sphere,
+    //       reference: data.reference,
+    //       status: data.status,
+    //       date: new Date(data.date)
+    //     };
+    //      return nc;
+    //   }));
 
 
 
@@ -86,16 +111,35 @@ export class NcService {
     }));*/
   }
 
+  uploadImage(image: File) {
+  const uploadData = new FormData();
+  uploadData.append('image', image);
+
+  return this.http.post<imageResData>('http://localhost:3000/upload', uploadData);
+  }
+
   addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
 
-    // tslint:disable-next-line:max-line-length
-    const newNc: NonconformModel = {id: null, title, imageUrl: image , description, location, severity, sphere, reference, status: true, date: new Date(Date.now())};
-    return this.http.post<{name: string}>('https://ionic-ncr-default-rtdb.firebaseio.com/nc.json', {...newNc, id: null})
+    const newNc: NonconformModel = {
+      _id: null,
+      title,
+      imageUrl: image,
+      description,
+      location,
+      severity,
+      sphere,
+      reference,
+      status: true,
+      date: null
+    };
+    return this.http.post<NonconformModel>('http://localhost:3000/nc', {...newNc, _id: null, date: null})
       .pipe(switchMap((resData) => {
-        this.generatedId = resData.name;
+        this.generatedId = resData._id;
+        this.date = new Date(resData.date);
         return this.nonConform;
     }), take(1), tap(ncs => {
-      newNc.id = this.generatedId;
+      newNc._id = this.generatedId;
+      newNc.date = this.date;
       return this.nonConform.next(ncs.concat(newNc));
       }));
   }
@@ -108,11 +152,11 @@ export class NcService {
         return of(ncs);
       }
     }), switchMap((ncs) => {
-      const index = ncs.findIndex(nc => nc.id === id);
+      const index = ncs.findIndex(nc => nc._id === id);
       const oldNc = ncs[index];
       newNc = [...ncs];
       newNc[index] = {
-        id: oldNc.id,
+        _id: oldNc._id,
         title,
         description,
         severity,
@@ -123,7 +167,7 @@ export class NcService {
         location: oldNc.location,
         date: oldNc.date
       };
-      return this.http.put(`https://ionic-ncr-default-rtdb.firebaseio.com/nc/${id}.json`, {...newNc[index], id: null} );
+      return this.http.put(`http://localhost:3000/nc/${id}`, {...newNc[index], id: null} );
     }), tap(() => {
       this.nonConform.next(newNc);
         }));

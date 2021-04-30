@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
 import * as moment from 'jalali-moment';
+import {switchMap} from 'rxjs/operators';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -52,7 +53,7 @@ export class NewNcPage implements OnInit, OnDestroy {
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(20)]
+        validators: [Validators.required, Validators.maxLength(20), Validators.minLength(6)]
       }),
       description: new FormControl(null, {
         updateOn: 'blur',
@@ -86,19 +87,38 @@ export class NewNcPage implements OnInit, OnDestroy {
       message: 'در حال بارگذاری...',
     });
     await loading.present();
-    this.ncSub = this.ncService.addNc(
-      this.form.value.title,
-      this.form.value.description,
-      this.form.value.location,
-      this.form.value.severity,
-      this.form.value.sphere,
-      this.form.value.ref,
-      this.form.value.image
+    if (this.form.get('image').value) {
+      this.ncSub = this.ncService.uploadImage(this.form.get('image').value).pipe(switchMap(resData => {
+        return this.ncService.addNc(
+          this.form.value.title,
+          this.form.value.description,
+          this.form.value.location,
+          this.form.value.severity,
+          this.form.value.sphere,
+          this.form.value.ref,
+          `http://localhost:3000/uploads/image/${resData.filename}`
+        );
+      })).subscribe(() => {
+        this.form.reset();
+        loading.dismiss();
+        this.router.navigateByUrl('/non-conform/tabs/discover');
+      });
+    } else {
+     this.ncSub = this.ncService.addNc(
+        this.form.value.title,
+        this.form.value.description,
+        this.form.value.location,
+        this.form.value.severity,
+        this.form.value.sphere,
+        this.form.value.ref,
+        '../../assets/img/nc.jpg'
     ).subscribe(() => {
-      this.form.reset();
-      loading.dismiss();
-      this.router.navigateByUrl('/non-conform/tabs/discover');
-    });
+  this.form.reset();
+  loading.dismiss();
+  this.router.navigateByUrl('/non-conform/tabs/discover');
+});
+    }
+
   }
   show(imageData: string | File) {
     let imageFile;

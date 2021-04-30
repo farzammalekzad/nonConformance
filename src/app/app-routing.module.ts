@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {AuthGuard} from './pages/auth/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'non-conform/tabs/discover',
-    pathMatch: 'full'
+    redirectTo: 'auth',
+    pathMatch: 'full',
   },
   {
     path: 'auth',
@@ -13,7 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'non-conform',
-    loadChildren: () => import('./pages/non-conform/non-conform.module').then( m => m.NonConformPageModule)
+    loadChildren: () => import('./pages/non-conform/non-conform.module').then( m => m.NonConformPageModule),
+    canLoad: [AuthGuard]
   }
 ];
 
