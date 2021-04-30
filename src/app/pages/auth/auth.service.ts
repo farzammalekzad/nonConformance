@@ -63,6 +63,7 @@ export class AuthService {
 
   onLogout() {
      this._user.next(null);
+     Storage.remove({key: 'authData'});
      this.route.navigateByUrl('/auth');
   }
    autoLogin() {

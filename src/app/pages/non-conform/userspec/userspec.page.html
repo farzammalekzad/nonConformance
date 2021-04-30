@@ -5,7 +5,31 @@
 </ion-header>
 
 <ion-content>
-  <h1>{{userSpec.fullname}}</h1>
-  <ion-button (click)="logout()">خروج</ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <div class="ion-text-center">
+            <ion-img src="../../assets/icon/user.png"></ion-img>
+          </div>
+          <ion-card-header class="ion-text-center">
+            <ion-card-subtitle *ngIf="userData.admin">سطح دسترسی کامل / مدیریتی </ion-card-subtitle>
+            <ion-card-subtitle *ngIf="!userData.admin">سطح دسترسی کارشناسی </ion-card-subtitle>
+            <ion-card-title>{{userData.fullname}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h2>ایمیل ثبت شده: {{userData.email}}</h2>
+            <p *ngIf="!userData.admin">سطح دسترسی جنابعالی کارشناسی می باشد در این بخش شما تنها به اطلاعات وارد شده توسط خود دسترسی خواهید داشت</p>
+            <p *ngIf="userData.admin">سطح دسترسی جنابعالی مدیریتی می باشد در این بخش شما نه تنها به اطلاعات وارد شده توسط خود دسترسی خواهید داشت بلکه به کلیه اطلاعات ثبت شده دسترسی دارید</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-padding">
+        <ion-button type="button" color="medium" fill="outline" expand="full" (click)="logout()" >خروج</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

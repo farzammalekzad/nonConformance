@@ -27,6 +27,7 @@ export class AuthPage implements OnInit {
     await this.authService.login(email, password).subscribe(async (resData) => {
       if (this.authService.success === true) {
         await loading.dismiss();
+        this.errMsg = null;
         return this.route.navigateByUrl('/non-conform/tabs/discover');
       }
     }, async (error) => {

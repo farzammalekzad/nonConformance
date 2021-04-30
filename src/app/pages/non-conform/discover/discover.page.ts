@@ -34,7 +34,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
     });
 }
 
-  editNc(id: number, itemSliding: IonItemSliding) {
+  editNc(id: string, itemSliding: IonItemSliding) {
     itemSliding.close().then(() => {
       this.router.navigate(['/', 'non-conform', 'tabs', 'edit', id ]);
     });

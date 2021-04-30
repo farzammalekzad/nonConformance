@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserModel} from '../../auth/User.model';
 import {AuthService} from '../../auth/auth.service';
+import {Storage} from '@capacitor/storage';
 
 @Component({
   selector: 'app-userspec',
@@ -8,12 +9,13 @@ import {AuthService} from '../../auth/auth.service';
   styleUrls: ['./userspec.page.scss'],
 })
 export class UserspecPage implements OnInit {
-  userSpec: UserModel;
-  constructor(private authService: AuthService) { }
+  userData: UserModel;
 
+  constructor(private authService: AuthService) { }
   ngOnInit() {
-   this.authService._user.subscribe(user => {
-     this.userSpec = user;
+
+   Storage.get({key: 'authData'}).then((authData) => {
+     this.userData = JSON.parse(authData.value);
    });
   }
 
