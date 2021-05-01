@@ -5,6 +5,7 @@ import {UserModel} from './User.model';
 import {map, take, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
+import {environment} from '../../../environments/environment';
 
 interface ResData {
   success: boolean;
@@ -46,7 +47,7 @@ export class AuthService {
 
   login(email: string, password: string) {
      let user: UserModel;
-     return this.http.post<ResData>('http://localhost:3000/user/login', {email, password})
+     return this.http.post<ResData>(`${environment.baseUrl}/user/login`, {email, password})
       .pipe(map(resData => {
         user = {
           id: resData.userId,
@@ -94,18 +95,4 @@ export class AuthService {
      const data = JSON.stringify({id, fullname, email, admin, token});
      await Storage.set({key: 'authData', value: data});
   }
-
-  /*useCredentials(credentials: any) {
-    this.isAuthenticated = true;
-    this._user.next(credentials);
-  }
-
-  async loadUserCredentials() {
-    const value = await Storage.get({key: 'authData'});
-    const credentials = JSON.parse(value.t);
-    console.log('loadUserCredentials ', credentials);
-    if (credentials && credentials.token !== undefined) {
-      this.useCredentials(credentials);
-    }
-  }*/
 }

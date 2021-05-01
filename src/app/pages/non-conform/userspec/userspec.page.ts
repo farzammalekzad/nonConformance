@@ -10,17 +10,22 @@ import {Storage} from '@capacitor/storage';
 })
 export class UserspecPage implements OnInit {
   userData: UserModel;
-
+  isLoading = true;
   constructor(private authService: AuthService) { }
-  ngOnInit() {
 
-   Storage.get({key: 'authData'}).then((authData) => {
-     this.userData = JSON.parse(authData.value);
-   });
+  ngOnInit() {
+    this.loadingStorage().then(() => {
+      this.isLoading = false;
+    });
   }
 
   logout() {
     this.authService.onLogout();
+  }
+
+  async loadingStorage() {
+    const authData = await Storage.get({key: 'authData'});
+    this.userData = await JSON.parse(authData.value);
   }
 
 }

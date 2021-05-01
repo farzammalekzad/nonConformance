@@ -1,0 +1,6 @@
+{
+	"appId": "ir.systemic-management",
+	"appName": "NC-Report",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
