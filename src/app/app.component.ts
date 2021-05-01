@@ -1,9 +1,12 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, Pipe, PipeTransform} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Platform} from '@ionic/angular';
 import {Capacitor} from '@capacitor/core';
 import {SplashScreen} from '@capacitor/splash-screen';
 import {AuthService} from './pages/auth/auth.service';
+import * as moment from 'jalali-moment';
+
+
 
 @Component({
   selector: 'app-root',

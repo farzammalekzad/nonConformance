@@ -16,7 +16,7 @@ export class ImagePickerComponent implements OnInit {
   selectedImage: string;
   desktopPlat = false;
   @Output() pickedImage = new EventEmitter<string | File>();
-  @ViewChild('filePicker', null) filePicker: ElementRef;
+  @ViewChild('filePicker', {}) filePicker: ElementRef<HTMLInputElement>;
   @Input() showPreview = false;
 
   constructor(private platform: Platform) { }

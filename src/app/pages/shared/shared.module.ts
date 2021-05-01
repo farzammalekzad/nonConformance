@@ -5,12 +5,12 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {NgxMapboxGLModule} from 'mapir-angular-component';
-import {ImagePickerComponent} from './picker/image-picker/image-picker.component';
+import {JalaliPipe} from '../non-conform/new-nc/new-nc.module';
 
 @NgModule({
-  declarations: [LocationModalComponent, LocationPickerComponent, ImagePickerComponent],
+  declarations: [LocationModalComponent, LocationPickerComponent, JalaliPipe],
   imports: [CommonModule, IonicModule, NgxMapboxGLModule],
-  exports: [LocationPickerComponent, LocationModalComponent, ImagePickerComponent],
+  exports: [LocationPickerComponent, LocationModalComponent, JalaliPipe],
   entryComponents: [LocationModalComponent]
 })
 
