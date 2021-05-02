@@ -34,7 +34,7 @@ export class EditNcPage implements OnInit, OnDestroy {
         return;
       }
       this.ncSub = this.ncService.getNcById(pm.get('ncId')).subscribe((nc) => {
-        this.nonConformity = nc;
+        this.nonConformity = nc.nc;
         this.form = new FormGroup({
             status: new FormControl(this.nonConformity.status),
             title: new FormControl(this.nonConformity.title, {

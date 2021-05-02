@@ -22,6 +22,7 @@ interface ResData {
 export class AuthService {
     _user = new BehaviorSubject<UserModel>(null);
     success = false;
+    username: string;
 
    get userId() {
      return this._user.asObservable().pipe(map(user => {
@@ -29,6 +30,14 @@ export class AuthService {
          return null;
        }
        return user.id;
+     }));
+   }
+   get userName() {
+     return this._user.asObservable().pipe(map(user => {
+       if(!user) {
+         return null;
+       }
+       return user.fullname;
      }));
    }
    get userIsAuthenticated() {

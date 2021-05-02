@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package ir.systemic.management;
 
 import com.getcapacitor.BridgeActivity;
 

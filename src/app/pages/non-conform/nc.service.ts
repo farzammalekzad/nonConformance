@@ -5,6 +5,7 @@ import {catchError, filter, findIndex, map, switchMap, take, tap} from 'rxjs/ope
 import {HttpClient} from '@angular/common/http';
 import {HttpService} from './http.service';
 import {environment} from '../../../environments/environment';
+import {AuthService} from '../auth/auth.service';
 
 
 interface NcData {
@@ -17,6 +18,10 @@ interface NcData {
   reference: string;
   status: boolean;
   date: string;
+}
+interface RData {
+  nc: NonconformModel;
+  username: string;
 }
 // tslint:disable-next-line:class-name
 interface imageResData {
@@ -33,12 +38,11 @@ interface imageResData {
   providedIn: 'root'
 })
 export class NcService {
-
+  username: string;
   generatedId: string;
   date: Date;
   nonConform = new BehaviorSubject<NonconformModel[]>([]);
-
-  constructor(private http: HttpClient, public httpService: HttpService) { }
+  constructor(private http: HttpClient, public httpService: HttpService, private authService: AuthService) { }
 
   getAllNc() {
     return this.nonConform.asObservable();
@@ -54,7 +58,7 @@ export class NcService {
 
 
 getNcById(id: string) {
-    return this.http.get<NonconformModel>(`${environment.baseUrl}/nc/${id}`)
+    return this.http.get<RData>(`${environment.baseUrl}/nc/${id}`)
       .pipe(map(resData => {
         return resData;
       }));

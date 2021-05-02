@@ -14,6 +14,7 @@ export class NcDetailPage implements OnInit, OnDestroy {
   nonConformance: NonconformModel;
   private ncSub: Subscription;
   isLoading = false;
+  userName: string;
 
   constructor(private activatedRoute: ActivatedRoute,
               private navCtrl: NavController,
@@ -29,7 +30,8 @@ export class NcDetailPage implements OnInit, OnDestroy {
         return;
       }
       this.ncSub = this.ncService.getNcById(paramMap.get('ncId')).subscribe((nc) => {
-        this.nonConformance = nc;
+        this.nonConformance = nc.nc;
+        this.userName = nc.username;
         this.isLoading = false;
       }, async error => {
         const alert = await this.alertCtrl.create({
