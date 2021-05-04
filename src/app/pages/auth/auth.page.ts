@@ -25,18 +25,20 @@ export class AuthPage implements OnInit {
     });
     await loading.present();
     await this.authService.login(email, password).subscribe(async (resData) => {
-      if (this.authService.success === true) {
+        if (this.authService.success === true) {
+          await loading.dismiss();
+          this.errMsg = null;
+          return this.route.navigateByUrl('/non-conform/tabs/discover');
+        }
+      }, async (error) => {
+        if (error.statusText === 'Unauthorized') {
+          this.errMsg = 'ایمیل یا نام کاربری صحیح نمی باشد';
+        }
+        else {
+          this.errMsg = 'مشکل ارتباط با سرور وجود دارد(12029)';
+        }
         await loading.dismiss();
-        this.errMsg = null;
-        return this.route.navigateByUrl('/non-conform/tabs/discover');
-      }
-    }, async (error) => {
-      if (error.statusText === 'Unauthorized') {
-        this.errMsg = 'ایمیل یا نام کاربری صحیح نمی باشد';
-      }
-      await loading.dismiss();
-    });
-
+      });
   }
 
   onLogin(form: NgForm) {

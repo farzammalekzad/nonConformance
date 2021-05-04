@@ -13,6 +13,7 @@ import {Subscription} from 'rxjs';
 export class NcDetailPage implements OnInit, OnDestroy {
   nonConformance: NonconformModel;
   private ncSub: Subscription;
+  private ncSub2: Subscription;
   isLoading = false;
   userName: string;
 
@@ -24,7 +25,7 @@ export class NcDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.activatedRoute.paramMap.subscribe((paramMap) => {
+    this.ncSub2 = this.activatedRoute.paramMap.subscribe((paramMap) => {
       if (!paramMap.has('ncId')) {
         this.navCtrl.navigateBack('/non-conform/tabs/discover');
         return;
@@ -51,8 +52,9 @@ export class NcDetailPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.ncSub) {
+    if (this.ncSub || this.ncSub2) {
       this.ncSub.unsubscribe();
+      this.ncSub2.unsubscribe();
     }
   }
 

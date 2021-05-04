@@ -6,6 +6,7 @@ import {LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import * as moment from 'jalali-moment';
+import {environment} from '../../../../environments/environment';
 
 
 
@@ -92,7 +93,7 @@ export class NewNcPage implements OnInit, OnDestroy {
           this.form.value.severity,
           this.form.value.sphere,
           this.form.value.ref,
-          `http://localhost:3000/uploads/image/${resData.filename}`
+          `${environment.baseUrl}/uploads/image/${resData.filename}`
         );
       })).subscribe(() => {
         this.form.reset();

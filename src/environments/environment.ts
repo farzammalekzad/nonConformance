@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://192.168.1.34:3000'
+  baseUrl: 'http://mohammad-malekzad.ir'
 };
 
 /*

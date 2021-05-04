@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, from, Observable, of} from 'rxjs';
 import {UserModel} from './User.model';
-import {map, take, tap} from 'rxjs/operators';
+import {catchError, map, take, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
 import {environment} from '../../../environments/environment';
+import {HttpService} from '../non-conform/http.service';
 
 interface ResData {
   success: boolean;
@@ -34,7 +35,7 @@ export class AuthService {
    }
    get userName() {
      return this._user.asObservable().pipe(map(user => {
-       if(!user) {
+       if (!user) {
          return null;
        }
        return user.fullname;
@@ -50,7 +51,7 @@ export class AuthService {
      }));
    }
 
-  constructor(private http: HttpClient, private route: Router) { }
+  constructor(private http: HttpClient, private route: Router, private httpError: HttpService) { }
 
 
 
@@ -68,8 +69,9 @@ export class AuthService {
         this.success = resData.success;
         this._user.next(user);
         this.storeAuthData(user.id, user.fullname, user.email, user.admin, user.token );
-      }));
-  }
+      }), catchError(this.httpError.handleError));
+   }
+
 
   onLogout() {
      this._user.next(null);
