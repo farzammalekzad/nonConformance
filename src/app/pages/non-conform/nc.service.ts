@@ -73,7 +73,9 @@ getNcById(id: string) {
   }
 
   addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
-
+    if (!image) {
+      image = '../../assets/img/nc.jpg';
+    }
     const newNc: NonconformModel = {
       _id: null,
       title,

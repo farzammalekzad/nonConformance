@@ -108,7 +108,7 @@ export class NewNcPage implements OnInit, OnDestroy {
         this.form.value.severity,
         this.form.value.sphere,
         this.form.value.ref,
-        '../../assets/img/nc.jpg'
+        null
     ).subscribe(() => {
   this.form.reset();
   loading.dismiss();
