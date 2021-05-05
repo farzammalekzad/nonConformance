@@ -1,9 +1,10 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button text="بازگشت" defaultHref="/non-conform/tabs/discover"></ion-back-button>
+      <ion-back-button text="بازگشت" defaultHref="/non-conform/tabs/discover/"></ion-back-button>
     </ion-buttons>
     <ion-title class="animate__animated animate__fadeIn">جزئیات عدم انطباق</ion-title>
+    <ion-button *ngIf="!isLoading" slot="primary" type="button" color="light" fill="clear" [routerLink]="['/', 'non-conform', 'tabs', 'edit', nonConformance._id ]">وضعیت/تغییر</ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-content>

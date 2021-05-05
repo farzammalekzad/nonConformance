@@ -72,6 +72,16 @@ getNcById(id: string) {
   return this.http.post<imageResData>(`${environment.baseUrl}/upload`, uploadData);
   }
 
+  /*async deleteNc(id: string) {
+    const admin = await Storage.get({key: 'authData'}).admin.value;
+    if (admin) {
+      return this.http.delete(`${environment.baseUrl}/nc/${id}`);
+    }
+    else {
+      return null;
+    }
+  }*/
+
   addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
     if (!image) {
       image = '../../assets/img/nc.jpg';

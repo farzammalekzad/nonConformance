@@ -31,6 +31,19 @@ function base64toBlob(base64Data, contentType) {
   return new Blob(byteArrays, { type: contentType });
 }
 
+function dataUrlToFile(dataurl, filename) {
+  let arr = dataurl.split(',');
+  let mime = arr[0].match(/:(.*?);/)[1];
+  let bstr = atob(arr[1]);
+  let n = bstr.length;
+  let u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, {type: mime});
+}
+
 
 
 @Component({
@@ -121,7 +134,8 @@ export class NewNcPage implements OnInit, OnDestroy {
     let imageFile;
     if (typeof imageData === 'string') {
       try {
-        imageFile = base64toBlob(imageData.replace('data:image/jpeg;base64', ''), 'image/jpeg');
+       // imageFile = base64toBlob(imageData.replace('data:image/jpeg;base64', ''), 'image/jpeg');
+        imageFile = dataUrlToFile(imageData, Math.floor(Math.random() * 1000));
       } catch (err) {
         console.log(err);
       }

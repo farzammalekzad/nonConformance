@@ -32,17 +32,17 @@ export class ImagePickerComponent implements OnInit {
       return;
     }
     Camera.getPhoto({
-          quality: 50,
+          quality: 60,
           allowEditing: false,
-          resultType: CameraResultType.Base64,
+          resultType: CameraResultType.DataUrl,
           saveToGallery: false,
           width: 320,
           height: 240,
           correctOrientation: true,
-          source: CameraSource.Camera,
+          source: CameraSource.Prompt,
         }).then((image) => {
-          this.selectedImage = image.base64String;
-          this.pickedImage.emit(image.base64String);
+          this.selectedImage = image.dataUrl;
+          this.pickedImage.emit(this.selectedImage);
        }).catch((err) => {
          console.log(err);
          this.filePicker.nativeElement.click();
