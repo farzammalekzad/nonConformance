@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NcService} from '../nc.service';
 import {NonconformModel} from '../nonconform.model';
-import {IonItemSliding, NavController} from '@ionic/angular';
+import {AlertController, IonItemSliding, NavController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {Storage} from '@capacitor/storage';
 
 @Component({
   selector: 'app-discover',
@@ -18,7 +19,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   private ncSub2: Subscription;
   errMess: string;
 
-  constructor(private ncService: NcService, private router: Router) { }
+  constructor(private ncService: NcService, private router: Router, private alertCtrl: AlertController) { }
 
   ngOnInit() {
      this.ncSub2 = this.ncService.getAllNc().subscribe();
@@ -39,6 +40,41 @@ export class DiscoverPage implements OnInit, OnDestroy {
       this.router.navigate(['/', 'non-conform', 'tabs', 'edit', id ]);
     });
   }
+
+  deleteNc(id: string, itemSliding: IonItemSliding) {
+    return itemSliding.close().then(async () => {
+      const userData = await Storage.get({key: 'authData'});
+      const user = JSON.parse(userData.value);
+      if (user.admin) {
+        this.isLoading = true;
+        this.ncService.deleteNc(id).subscribe(async (resp) => {
+          const alert = await this.alertCtrl.create({
+            header: 'حذف عدم انطباق',
+            message: 'عدم انطباق با موفقیت حذف شد',
+            buttons: ['باشه']
+          });
+          await alert.present();
+          this.ionViewWillEnter();
+        }, async (err) => {
+          const alert = await this.alertCtrl.create({
+            header: 'اشکالی رخ داده',
+            message: 'عدم انطباق حذف نشد',
+            buttons: ['باشه']
+          });
+          await alert.present();
+        });
+      }
+      else {
+        const alert = await this.alertCtrl.create({
+          header: 'اشکال در سطح دسترسی',
+          message: 'شما مجوز حذف عدم انطباق را ندارید',
+          buttons: ['باشه']
+        });
+        await alert.present();
+      }
+    });
+  }
+
 
   ngOnDestroy() {
     if (this.ncSub1 || this.ncSub2) {

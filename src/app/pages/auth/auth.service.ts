@@ -69,7 +69,7 @@ export class AuthService {
         this.success = resData.success;
         this._user.next(user);
         this.storeAuthData(user.id, user.fullname, user.email, user.admin, user.token );
-      }), catchError(this.httpError.handleError));
+      }));
    }
 
 

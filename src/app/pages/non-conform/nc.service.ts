@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {HttpService} from './http.service';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../auth/auth.service';
+import {Storage} from '@capacitor/storage';
 
 
 interface NcData {
@@ -72,15 +73,9 @@ getNcById(id: string) {
   return this.http.post<imageResData>(`${environment.baseUrl}/upload`, uploadData);
   }
 
-  /*async deleteNc(id: string) {
-    const admin = await Storage.get({key: 'authData'}).admin.value;
-    if (admin) {
-      return this.http.delete(`${environment.baseUrl}/nc/${id}`);
-    }
-    else {
-      return null;
-    }
-  }*/
+  deleteNc(id: string) {
+    return this.http.delete<{status: string}>(`${environment.baseUrl}/nc/${id}`);
+  }
 
   addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
     if (!image) {
