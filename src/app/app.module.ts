@@ -7,7 +7,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
-import {NgxMapboxGLModule} from 'mapir-angular-component';
 import {Interceptor} from './pages/auth/Interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
@@ -19,7 +18,6 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgxMapboxGLModule,
     IonicModule.forRoot(),
     AppRoutingModule
     ],

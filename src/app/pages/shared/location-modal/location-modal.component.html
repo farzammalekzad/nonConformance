@@ -6,14 +6,17 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div id="container" >
+  <div *ngIf="isLoading" class="ion-text-center spin">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <div id="container" *ngIf="!isLoading">
     <mgl-map
-      [zoom]="[12]"
+      [zoom]="[15]"
       [center]="currentPosition"
       [centerWithPanTo]="true"
       [interactive]="true"
       [apiKey]="apiKey"
-    ></mgl-map>
+    >
+    </mgl-map>
   </div>
-
 </ion-content>

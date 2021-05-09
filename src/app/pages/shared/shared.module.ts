@@ -6,6 +6,7 @@ import {NgModule, Pipe, PipeTransform} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {NgxMapboxGLModule} from 'mapir-angular-component';
 import * as moment from 'jalali-moment';
+import {Map} from 'mapir-angular';
 
 @Pipe({
   name: 'jalali'
@@ -19,7 +20,7 @@ export class JalaliPipe implements PipeTransform {
 
 @NgModule({
   declarations: [LocationModalComponent, LocationPickerComponent, JalaliPipe],
-  imports: [CommonModule, IonicModule, NgxMapboxGLModule],
+  imports: [CommonModule, IonicModule, NgxMapboxGLModule, Map],
   exports: [LocationPickerComponent, LocationModalComponent, JalaliPipe],
   entryComponents: [LocationModalComponent]
 })
