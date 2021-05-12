@@ -5,6 +5,7 @@ import {AlertController, IonItemSliding, NavController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Storage} from '@capacitor/storage';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-discover',
@@ -19,7 +20,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
   private ncSub2: Subscription;
   errMess: string;
 
-  constructor(private ncService: NcService, private router: Router, private alertCtrl: AlertController) { }
+  constructor(private ncService: NcService,
+              private router: Router,
+              private alertCtrl: AlertController) { }
 
   ngOnInit() {
      this.ncSub2 = this.ncService.getAllNc().subscribe();

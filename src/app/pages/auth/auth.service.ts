@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, from, Observable, of} from 'rxjs';
 import {UserModel} from './User.model';
@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {Storage} from '@capacitor/storage';
 import {environment} from '../../../environments/environment';
 import {HttpService} from '../non-conform/http.service';
+import {AuthProject} from './AuthProject.model';
 
 interface ResData {
   success: boolean;
@@ -24,8 +25,20 @@ export class AuthService {
     _user = new BehaviorSubject<UserModel>(null);
     success = false;
     username: string;
+    projectAddress: string;
 
-   get userId() {
+  serverAddress() {
+   return this.http.get<AuthProject[]>('http://localhost:3000/server').pipe(map(projects => {
+     return projects;
+   }));
+  }
+
+  sendServerAddress() {
+    return this.projectAddress;
+  }
+
+
+  get userId() {
      return this._user.asObservable().pipe(map(user => {
        if (!user) {
          return null;
@@ -33,6 +46,7 @@ export class AuthService {
        return user.id;
      }));
    }
+
    get userName() {
      return this._user.asObservable().pipe(map(user => {
        if (!user) {
@@ -55,9 +69,10 @@ export class AuthService {
 
 
 
-  login(email: string, password: string) {
+  login(email: string, password: string, project: string) {
      let user: UserModel;
-     return this.http.post<ResData>(`${environment.baseUrl}/user/login`, {email, password})
+     this.projectAddress = project;
+     return this.http.post<ResData>(`${project}/user/login`, {email, password})
       .pipe(map(resData => {
         user = {
           id: resData.userId,
@@ -76,6 +91,7 @@ export class AuthService {
   onLogout() {
      this._user.next(null);
      Storage.remove({key: 'authData'});
+     this.projectAddress = null;
      this.route.navigateByUrl('/auth');
   }
    autoLogin() {

@@ -1,16 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import { NgForm } from '@angular/forms';
 import {LoadingController} from '@ionic/angular';
+import {AuthProject} from './AuthProject.model';
+import {BehaviorSubject} from 'rxjs';
+
+
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
 })
+
+
 export class AuthPage implements OnInit {
   errMsg: string;
+  public projectAddress: string;
+  projects: AuthProject[] = [];
+
   constructor(private authService: AuthService, private route: Router, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
@@ -18,13 +27,15 @@ export class AuthPage implements OnInit {
       this.authService.autoLogin();
       this.route.navigateByUrl('/non-conform/tabs/discover');
     }
+    this.getServerForCall();
   }
-  async Authenticate(email: string, password: string) {
+  async Authenticate(email: string, password: string, project: string) {
+    console.log(project);
     const loading = await this.loadingCtrl.create({
       message: 'در حال بررسی'
     });
     await loading.present();
-    await this.authService.login(email, password).subscribe(async (resData) => {
+    await this.authService.login(email, password, project).subscribe(async (resData) => {
         if (this.authService.success === true) {
           await loading.dismiss();
           this.errMsg = null;
@@ -47,7 +58,13 @@ export class AuthPage implements OnInit {
     }
     const email = form.value.email;
     const password = form.value.password;
-    return this.Authenticate(email, password);
+    this.projectAddress = form.value.server.serverAddress;
+    return this.Authenticate(email, password, this.projectAddress);
+  }
+  getServerForCall() {
+    return this.authService.serverAddress().subscribe(servers => {
+        this.projects = servers;
+    });
   }
 
 }

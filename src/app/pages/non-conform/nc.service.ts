@@ -43,23 +43,26 @@ export class NcService {
   generatedId: string;
   date: Date;
   nonConform = new BehaviorSubject<NonconformModel[]>([]);
-  constructor(private http: HttpClient, public httpService: HttpService, private authService: AuthService) { }
+  constructor(private http: HttpClient,
+              public httpService: HttpService,
+              private authService: AuthService,
+             ) { }
 
   getAllNc() {
     return this.nonConform.asObservable();
   }
 
   fetchNcs() {
-    return this.http.get<NonconformModel[]>(`${environment.baseUrl}/nc`)
-      .pipe(map(resData => {
+    return this.http.get<NonconformModel[]>(`${this.authService.sendServerAddress()}/nc`)
+        .pipe(map(resData => {
           this.nonConform.next(resData);
           return resData;
-      }), catchError(this.httpService.handleError));
-      }
+        }), catchError(this.httpService.handleError));
+    }
 
 
 getNcById(id: string) {
-    return this.http.get<RData>(`${environment.baseUrl}/nc/${id}`)
+    return this.http.get<RData>(`${this.authService.sendServerAddress()}/nc/${id}`)
       .pipe(map(resData => {
         return resData;
       }));
@@ -70,11 +73,11 @@ getNcById(id: string) {
   const uploadData = new FormData();
   uploadData.append('image', image);
 
-  return this.http.post<imageResData>(`${environment.baseUrl}/upload`, uploadData);
+  return this.http.post<imageResData>(`${this.authService.sendServerAddress()}/upload`, uploadData);
   }
 
   deleteNc(id: string) {
-    return this.http.delete<{status: string}>(`${environment.baseUrl}/nc/${id}`);
+    return this.http.delete<{status: string}>(`${this.authService.sendServerAddress()}/nc/${id}`);
   }
 
   addNc(title: string, description: string, location: string, severity: string, sphere: string, reference: string, image: string) {
@@ -93,7 +96,7 @@ getNcById(id: string) {
       status: true,
       date: null
     };
-    return this.http.post<NonconformModel>(`${environment.baseUrl}/nc`, {...newNc, _id: null, date: null})
+    return this.http.post<NonconformModel>(`${this.authService.sendServerAddress()}/nc`, {...newNc, _id: null, date: null})
       .pipe(switchMap((resData) => {
         this.generatedId = resData._id;
         this.date = new Date(resData.date);
@@ -128,7 +131,7 @@ getNcById(id: string) {
         location: oldNc.location,
         date: oldNc.date
       };
-      return this.http.put(`${environment.baseUrl}/nc/${id}`, {...newNc[index], id: null} );
+      return this.http.put(`${this.authService.sendServerAddress()}/nc/${id}`, {...newNc[index], id: null} );
     }), tap(() => {
       this.nonConform.next(newNc);
         }));
